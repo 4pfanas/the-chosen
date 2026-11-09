@@ -1,0 +1,20 @@
+---
+// Typographic stand-in for The Chosen's sliced wordmark. Swap for the official logo file once supplied.
+interface Props {
+  class?: string;
+  size?: 'sm' | 'lg';
+}
+const { class: cls = '', size = 'sm' } = Astro.props;
+---
+
+<span class:list={['inline-flex flex-col items-center leading-none', cls]} dir="ltr" lang="en">
+  <span class:list={['wordmark', size === 'sm' ? 'text-[1.15rem] md:text-[1.3rem]' : 'text-[clamp(2.2rem,9.4vw,9.5rem)]']}>TheChosen</span>
+  <span
+    class:list={[
+      'font-[family-name:var(--font-wide)] font-semibold uppercase opacity-80 [font-variation-settings:"wdth"_125]',
+      size === 'sm' ? 'mt-1 text-[0.42rem] tracking-[0.42em]' : 'mt-[0.3em] text-[clamp(0.7rem,1.6vw,1.5rem)] tracking-[0.5em]',
+    ]}
+  >
+    Speciality coffee
+  </span>
+</span>

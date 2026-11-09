@@ -1,0 +1,53 @@
+---
+import { site } from '../data/site';
+import type { Content } from '../data/content';
+import Button from './ui/Button.astro';
+import SmartImage from './ui/SmartImage.astro';
+
+interface Props {
+  c: Content;
+}
+const { c } = Astro.props;
+const m = c.menu;
+---
+
+<section id="menu" class="relative bg-paper py-24 text-ink md:py-36" aria-labelledby="menu-title">
+  <div class="container-x">
+    <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-7">
+        <p class="t-wide text-cobalt" data-reveal>{m.eyebrow}</p>
+        <h2 id="menu-title" class="t-serif t-h2 mt-5" data-reveal>{m.title}</h2>
+      </div>
+      <div class="flex flex-col gap-6 lg:col-span-4 lg:col-start-9" data-reveal>
+        <p class="t-body text-ink/65">{m.note}</p>
+        <Button href={site.orderUrl} label={c.cta.orderLong} external class="self-start" />
+      </div>
+    </div>
+
+    <div class="mt-16 grid gap-x-12 gap-y-14 md:grid-cols-2 lg:grid-cols-12">
+      {
+        m.groups.map((g, gi) => (
+          <div class:list={['lg:col-span-4', gi === 2 && 'lg:col-start-1']} data-reveal>
+            <h3 class="t-wide border-b border-ink pb-4 text-ink">{g.title}</h3>
+            <ul>
+              {g.items.map((it) => (
+                <li class="flex items-baseline justify-between gap-4 border-b border-line-light py-4">
+                  <span>
+                    <span class="font-semibold">{it.name}</span>
+                    {it.note && <span class="block text-[0.88rem] text-ink/55">{it.note}</span>}
+                  </span>
+                  {it.price && <span class="t-num shrink-0 text-[0.9rem]">{it.price}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+      <div class="relative hidden aspect-[16/9] overflow-hidden rounded-[2rem] bg-bone md:block md:col-span-2 lg:sticky lg:top-28 lg:col-span-4 lg:col-start-9 lg:row-span-2 lg:row-start-1 lg:aspect-[4/5] lg:self-start" data-reveal>
+        <div class="h-full w-full" data-drift>
+          <SmartImage name="brioche-labneh" alt={m.imageAlt} sizes="(min-width: 1024px) 30vw, 90vw" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

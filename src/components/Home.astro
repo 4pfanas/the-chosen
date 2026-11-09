@@ -1,0 +1,43 @@
+---
+import type { Lang } from '../data/site';
+import { site } from '../data/site';
+import { content } from '../data/content';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Cloud from './Cloud.astro';
+import Signatures from './Signatures.astro';
+import Menu from './Menu.astro';
+import Craft from './Craft.astro';
+import Ritual from './Ritual.astro';
+import Reviews from './Reviews.astro';
+import TakeHome from './TakeHome.astro';
+import Visit from './Visit.astro';
+import Footer from './Footer.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = content[lang];
+---
+
+<Header lang={lang} c={c} />
+<main id="main" tabindex="-1" class="outline-none">
+  <Hero c={c} />
+  <Cloud c={c} />
+  <Signatures lang={lang} c={c} />
+  <Menu c={c} />
+  <Craft c={c} />
+  <Ritual c={c} />
+  <Reviews c={c} />
+  <TakeHome c={c} />
+  <Visit lang={lang} c={c} />
+</main>
+<Footer lang={lang} c={c} />
+{
+  site.isConcept && (
+    <p class="t-wide pointer-events-none fixed bottom-4 start-4 z-40 rounded-full bg-cobalt px-3 py-1.5 text-[0.6rem] text-white">
+      {c.concept}
+    </p>
+  )
+}

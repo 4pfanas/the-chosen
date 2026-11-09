@@ -1,0 +1,50 @@
+---
+import type { Lang } from '../data/site';
+import { site, pathFor } from '../data/site';
+import type { Content } from '../data/content';
+import Wordmark from './Wordmark.astro';
+import Button from './ui/Button.astro';
+
+interface Props {
+  lang: Lang;
+  c: Content;
+}
+const { lang, c } = Astro.props;
+const other = c.nav.switchLang;
+---
+
+<header class="site-header fixed inset-x-0 top-0 z-50 text-paper" data-header>
+  <div class="container-x flex h-[68px] items-center justify-between gap-4 md:h-[80px]">
+    <a href={pathFor(lang)} aria-label={c.nav.home} class="shrink-0 text-paper">
+      <Wordmark />
+    </a>
+
+    <nav aria-label={c.nav.label} class="hidden lg:block">
+      <ul class="flex items-center gap-9">
+        {
+          c.nav.links.map((link) => (
+            <li>
+              <a href={link.href} class="text-[0.92rem] font-medium text-paper/75 transition-colors hover:text-paper">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={pathFor(other)}
+        hreflang={other}
+        lang={other}
+        aria-label={c.nav.switchLabelFull}
+        class="grid h-[42px] min-w-[42px] place-items-center rounded-full border border-line-dark px-3 text-[0.9rem] font-semibold transition-colors hover:border-paper"
+        data-lang-switch
+      >
+        {c.nav.switchLabel}
+      </a>
+      <Button href={site.orderUrl} label={c.cta.order} size="sm" external />
+    </div>
+  </div>
+</header>

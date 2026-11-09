@@ -1,0 +1,46 @@
+---
+import type { Lang } from '../data/site';
+import { site, whatsappLink } from '../data/site';
+import type { Content } from '../data/content';
+import Button from './ui/Button.astro';
+
+interface Props {
+  lang: Lang;
+  c: Content;
+}
+const { lang, c } = Astro.props;
+const v = c.visit;
+---
+
+<section id="visit" class="relative bg-ink py-24 md:py-36" aria-labelledby="visit-title">
+  <div class="container-x grid gap-14 lg:grid-cols-12 lg:gap-10">
+    <div class="lg:col-span-6">
+      <p class="t-wide text-paper/60" data-reveal>{v.eyebrow}</p>
+      <h2 id="visit-title" class="t-serif t-h2 mt-5" data-reveal>{v.title}</h2>
+      <div class="mt-10 flex flex-wrap gap-3" data-reveal>
+        <Button href={site.mapsUrl} label={c.cta.directions} external />
+        <Button href={site.driveThruUrl} label={c.cta.driveThru} variant="line" external />
+        <Button href={whatsappLink(lang)} label={c.cta.whatsapp} variant="line" external />
+      </div>
+    </div>
+
+    <dl class="border-t border-line-dark lg:col-span-5 lg:col-start-8" data-reveal>
+      <div class="grid gap-2 border-b border-line-dark py-7 sm:grid-cols-[8rem_1fr]">
+        <dt class="t-wide text-stone">{v.addressLabel}</dt>
+        <dd class="t-body">{v.address}</dd>
+      </div>
+      <div class="grid gap-2 border-b border-line-dark py-7 sm:grid-cols-[8rem_1fr]">
+        <dt class="t-wide text-stone">{v.hoursLabel}</dt>
+        <dd class="t-body">{v.hours}</dd>
+      </div>
+      <div class="grid gap-2 border-b border-line-dark py-7 sm:grid-cols-[8rem_1fr]">
+        <dt class="t-wide text-stone">{v.orderLabel}</dt>
+        <dd class="t-body">{v.order}</dd>
+      </div>
+      <div class="grid gap-2 border-b border-line-dark py-7 sm:grid-cols-[8rem_1fr]">
+        <dt class="t-wide text-stone">WhatsApp</dt>
+        <dd class="t-body"><a href={whatsappLink(lang)} target="_blank" rel="noopener" class="hover:text-cobalt" dir="ltr">{site.phoneDisplay}</a></dd>
+      </div>
+    </dl>
+  </div>
+</section>

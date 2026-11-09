@@ -1,0 +1,41 @@
+---
+import { site } from '../data/site';
+import type { Content } from '../data/content';
+import Button from './ui/Button.astro';
+import SmartImage from './ui/SmartImage.astro';
+
+interface Props {
+  c: Content;
+}
+const { c } = Astro.props;
+const cl = c.cloud;
+---
+
+<section id="cloud" class="relative overflow-hidden bg-paper py-24 text-ink md:py-36" aria-labelledby="cloud-title">
+  <div class="container-x grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
+    <div class="relative lg:col-span-5" data-reveal>
+      <div class="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-bone">
+        <div class="h-full w-full" data-drift>
+          <SmartImage name="cloud-coffee" alt={cl.imageAlt} sizes="(min-width: 1024px) 38vw, 92vw" />
+        </div>
+      </div>
+      <span class="t-wide absolute -bottom-5 start-6 rounded-full bg-cobalt px-4 py-2.5 text-white">{cl.tags[0]}</span>
+    </div>
+
+    <div class="lg:col-span-6 lg:col-start-7">
+      <p class="t-wide text-cobalt" data-reveal>{cl.eyebrow}</p>
+      <h2 id="cloud-title" class="t-serif t-h2 mt-5" data-reveal>{cl.title}</h2>
+      <p class="t-body mt-6 max-w-lg text-ink/75" data-reveal>{cl.sub}</p>
+      <ul class="mt-7 flex flex-wrap gap-2" data-reveal>
+        {cl.tags.map((t) => <li class="rounded-full border border-line-light px-4 py-2 text-[0.88rem] font-medium">{t}</li>)}
+      </ul>
+      <figure class="mt-12 border-t border-line-light pt-8" data-reveal>
+        <blockquote class="t-serif text-[clamp(1.6rem,2.6vw,2.2rem)] leading-[1.15] rtl:leading-[1.6]">“{cl.quote}”</blockquote>
+        <figcaption class="t-wide mt-4 text-stone">{cl.quoteBy} · ★★★★★</figcaption>
+      </figure>
+      <div class="mt-10" data-reveal>
+        <Button href={site.orderUrl} label={c.cta.orderLong} external />
+      </div>
+    </div>
+  </div>
+</section>

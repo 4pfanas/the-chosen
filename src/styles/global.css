@@ -1,0 +1,180 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/* ───────────── Brand tokens (black, white, The Chosen's cobalt cups) ───────────── */
+@theme {
+  --color-ink: #0c0c0d;
+  --color-coal: #161618;
+  --color-ash: #232326;
+  --color-paper: #f2efe9;
+  --color-bone: #e6e1d8;
+  --color-stone: #8c877e;
+  --color-cobalt: #2440e6;
+  --color-cobalt-deep: #1a2fae;
+  --color-line-dark: rgb(255 255 255 / 0.12);
+  --color-line-light: rgb(12 12 13 / 0.12);
+
+  --font-sans: "Manrope", ui-sans-serif, sans-serif;
+  --font-serif: "Instrument Serif", serif;
+  --font-wide: "Archivo Variable", "Manrope", sans-serif;
+  --font-ar: "IBM Plex Sans Arabic", "Manrope", sans-serif;
+
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background: var(--color-ink);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+  }
+  html[lang="ar"] body { font-family: var(--font-ar); }
+  ::selection { background: var(--color-cobalt); color: #fff; }
+  :focus-visible { outline: 2px solid var(--color-cobalt); outline-offset: 3px; }
+  a { color: inherit; text-decoration: none; }
+}
+
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 84rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) { .container-x { padding-inline: 2.5rem; } }
+  @media (min-width: 1024px) { .container-x { padding-inline: 3.5rem; } }
+
+  /* Big poetic headlines: Instrument Serif (EN), Plex Arabic (AR) */
+  .t-serif {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 0.95;
+  }
+  html[lang="ar"] .t-serif {
+    font-family: var(--font-ar);
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.25;
+  }
+  .t-hero { font-size: clamp(3.6rem, 11.5vw, 10.5rem); }
+  html[lang="ar"] .t-hero { font-size: clamp(3.2rem, 10vw, 8rem); }
+  .t-h2 { font-size: clamp(2.6rem, 6.4vw, 5.4rem); }
+  html[lang="ar"] .t-h2 { font-size: clamp(2.2rem, 5.2vw, 4.2rem); }
+  .t-h3 { font-size: clamp(1.7rem, 2.6vw, 2.3rem); line-height: 1.05; }
+  html[lang="ar"] .t-h3 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.4; }
+
+  /* Wide uppercase labels: echo of the THECHOSEN wordmark */
+  .t-wide {
+    font-family: var(--font-wide);
+    font-variation-settings: "wdth" 125;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  html[lang="ar"] .t-wide {
+    font-family: var(--font-ar);
+    font-variation-settings: normal;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .t-num {
+    font-family: var(--font-wide);
+    font-variation-settings: "wdth" 125;
+    font-weight: 800;
+  }
+  html[lang="ar"] .t-num { font-family: var(--font-ar); font-variation-settings: normal; font-weight: 700; }
+
+  .t-body { font-size: 1.05rem; line-height: 1.7; }
+  html[lang="ar"] .t-body { font-size: 1.1rem; line-height: 1.95; }
+
+  /* Sliced wordmark, a nod to the striped THECHOSEN logo */
+  .wordmark {
+    font-family: var(--font-wide);
+    font-variation-settings: "wdth" 125;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    background: repeating-linear-gradient(180deg, currentColor 0 2.6px, transparent 2.6px 3.6px);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Pills / buttons */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 50px;
+    padding-inline: 1.5rem;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    transition: background-color 0.35s var(--ease-calm), color 0.35s var(--ease-calm), border-color 0.35s, transform 0.35s var(--ease-calm);
+  }
+  html[lang="ar"] .pill { font-family: var(--font-ar); font-weight: 600; }
+  .pill-cobalt { background: var(--color-cobalt); color: #fff; }
+  .pill-cobalt:hover { background: #fff; color: var(--color-ink); }
+  .pill-light { background: var(--color-paper); color: var(--color-ink); }
+  .pill-light:hover { background: var(--color-cobalt); color: #fff; }
+  .pill-line { border: 1px solid currentColor; }
+  .pill-line:hover { background: currentColor; }
+  .pill-line:hover > * { color: var(--color-ink); }
+  .pill-sm { min-height: 42px; padding-inline: 1.1rem; font-size: 0.88rem; }
+  .pill .arrow { transition: translate 0.35s var(--ease-calm); }
+  .pill:hover .arrow { translate: 3px 0; }
+  [dir="rtl"] .pill .arrow { transform: scaleX(-1); }
+  [dir="rtl"] .pill:hover .arrow { translate: -3px 0; }
+
+  /* Marquee */
+  .marquee { overflow: hidden; }
+  .marquee-track { display: flex; width: max-content; animation: marquee var(--marquee-speed, 40s) linear infinite; }
+  [dir="rtl"] .marquee-track { animation-name: marquee-rtl; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @keyframes marquee-rtl { to { transform: translateX(50%); } }
+
+  /* Header */
+  .site-header { transition: transform 0.6s var(--ease-calm), background-color 0.4s, border-color 0.4s; border-bottom: 1px solid transparent; }
+  .site-header.is-scrolled {
+    background: rgb(12 12 13 / 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-color: var(--color-line-dark);
+  }
+  .site-header.is-hidden { transform: translateY(-100%); }
+
+  .skip-link {
+    position: fixed; inset-inline-start: 1rem; top: 1rem; z-index: 100;
+    padding: 0.75rem 1.25rem; background: var(--color-cobalt); color: #fff; transform: translateY(-200%);
+  }
+  .skip-link:focus { transform: none; }
+
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  .signature-row[data-active] .sig-name { color: #fff; }
+  .signature-row[data-active] .sig-num { color: var(--color-cobalt); }
+}
+
+/* ───────────── Motion initial states ───────────── */
+html.js-motion [data-hero-line] { transform: translateY(105%); }
+html.js-motion [data-hero-fade] { opacity: 0; transform: translateY(18px); }
+html.js-motion [data-hero-img] { transform: scale(1.12); }
+html.is-leaving body { opacity: 0; transition: opacity 0.3s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  .pill, .site-header { transition: none; }
+}

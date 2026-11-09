@@ -1,0 +1,44 @@
+---
+import type { Lang } from '../data/site';
+import type { Content } from '../data/content';
+import SmartImage from './ui/SmartImage.astro';
+
+interface Props {
+  lang: Lang;
+  c: Content;
+}
+const { lang, c } = Astro.props;
+const s = c.signatures;
+const nums = lang === 'ar' ? ['٠١', '٠٢', '٠٣', '٠٤', '٠٥', '٠٦', '٠٧'] : ['01', '02', '03', '04', '05', '06', '07'];
+---
+
+<section class="relative bg-ink py-24 md:py-36" aria-labelledby="sig-title" data-signatures>
+  <div class="container-x grid gap-14 lg:grid-cols-12 lg:gap-10">
+    <div class="lg:col-span-5">
+      <div class="lg:sticky lg:top-28">
+        <p class="t-wide text-paper/60" data-reveal>{s.eyebrow}</p>
+        <h2 id="sig-title" class="t-serif t-h2 mt-5" data-reveal>{s.title}</h2>
+        <p class="t-body mt-5 max-w-sm text-paper/65" data-reveal>{s.sub}</p>
+        <div class="mt-10 hidden aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] bg-coal lg:block" data-reveal>
+          <SmartImage name="the-ohio" alt={s.imageAlt} sizes="24rem" />
+        </div>
+      </div>
+    </div>
+
+    <ol class="border-t border-line-dark lg:col-span-7">
+      {
+        s.items.map((it, i) => (
+          <li class="signature-row group border-b border-line-dark" data-sig-row>
+            <div class="flex items-baseline gap-6 py-7 md:gap-10 md:py-9">
+              <span class="sig-num t-num w-10 shrink-0 text-[0.9rem] text-stone transition-colors duration-500">{nums[i]}</span>
+              <div class="flex min-w-0 flex-1 flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-8">
+                <h3 class="sig-name t-serif t-h3 text-paper/55 transition-colors duration-500 group-hover:text-paper">{it.name}</h3>
+                <p class="text-[0.95rem] text-paper/55 md:text-end">{it.note}</p>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

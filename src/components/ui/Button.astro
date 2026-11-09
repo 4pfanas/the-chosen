@@ -1,0 +1,28 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  variant?: 'cobalt' | 'light' | 'line';
+  size?: 'md' | 'sm';
+  external?: boolean;
+  arrow?: boolean;
+  class?: string;
+}
+const { href, label, variant = 'cobalt', size = 'md', external = false, arrow = true, class: cls = '' } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={['pill', `pill-${variant}`, size === 'sm' && 'pill-sm', cls]}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener' : undefined}
+>
+  <span>{label}</span>
+  {
+    arrow && (
+      <svg class="arrow" width="16" height="10" viewBox="0 0 16 10" aria-hidden="true" focusable="false">
+        <path d="M0 5h14.5M10.5 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" />
+      </svg>
+    )
+  }
+</a>

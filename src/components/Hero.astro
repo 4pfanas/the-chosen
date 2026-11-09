@@ -1,0 +1,76 @@
+---
+import { site } from '../data/site';
+import type { Content } from '../data/content';
+import Button from './ui/Button.astro';
+import SmartImage from './ui/SmartImage.astro';
+
+interface Props {
+  c: Content;
+}
+const { c } = Astro.props;
+const h = c.hero;
+---
+
+<section id="top" class="relative isolate min-h-[100svh] overflow-hidden" aria-labelledby="hero-title" data-hero>
+  <div class="absolute inset-0 -z-10" aria-hidden="true">
+    <div class="h-full w-full" data-hero-img>
+      <SmartImage name="hero-pour" alt="" sizes="100vw" priority imgClass="object-[60%_center]" />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-ink/20"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-ink/70 to-transparent rtl:bg-gradient-to-l"></div>
+  </div>
+  <span class="sr-only">{h.imageAlt}</span>
+
+  <div class="container-x flex min-h-[100svh] flex-col justify-end pb-14 pt-32 md:pb-20" data-hero-copy>
+    <p class="t-wide flex items-center gap-3 text-paper/80" data-hero-fade>
+      <span class="inline-block h-1.5 w-1.5 rounded-full bg-cobalt" aria-hidden="true"></span>
+      {h.eyebrow}
+    </p>
+
+    <h1 id="hero-title" class="t-serif t-hero mt-6 text-paper">
+      <span class="sr-only">{h.lines.join(' ')}</span>
+      <span aria-hidden="true">
+        {
+          h.lines.map((line, i) => (
+            <span class="block overflow-hidden pb-[0.06em]">
+              <span class:list={['block', i === 1 && 'italic text-paper/90 rtl:not-italic']} data-hero-line>
+                {line}
+              </span>
+            </span>
+          ))
+        }
+      </span>
+    </h1>
+
+    <div class="mt-8 grid gap-8 md:mt-10 md:grid-cols-[minmax(0,28rem)_auto] md:items-end md:justify-between">
+      <div data-hero-fade>
+        <p class="t-body text-paper/80">{h.sub}</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <Button href={site.orderUrl} label={c.cta.orderLong} external />
+          <Button href={site.mapsUrl} label={c.cta.directions} variant="line" external />
+        </div>
+      </div>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2 text-[0.9rem] text-paper/70 md:flex-col md:items-end md:text-end" data-hero-fade>
+        {h.trust.map((t) => <li>{t}</li>)}
+        <li class="t-wide mt-2 rounded-full border border-line-dark px-3 py-1.5 text-paper/90">{h.badge}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="marquee border-y border-line-dark bg-ink py-5" style="--marquee-speed: 55s" aria-hidden="true">
+  <div class="marquee-track">
+    {
+      [0, 1].map(() => (
+        <div class="flex shrink-0 items-center">
+          {c.ticker.map((t) => (
+            <span class="t-serif flex items-center whitespace-nowrap px-7 text-[1.9rem] text-paper/80 md:text-[2.4rem]">
+              {t}
+              <span class="ms-14 inline-block h-2 w-2 rounded-full bg-cobalt" />
+            </span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</div>

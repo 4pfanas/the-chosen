@@ -1,0 +1,46 @@
+---
+// Responsive image by filename, with a quiet placeholder while photography is pending.
+import { Picture } from 'astro:assets';
+import { findImage } from '../../lib/images';
+
+interface Props {
+  name: string;
+  alt: string;
+  sizes: string;
+  priority?: boolean;
+  class?: string;
+  imgClass?: string;
+}
+const { name, alt, sizes, priority = false, class: cls = '', imgClass = '' } = Astro.props;
+
+const img = findImage(name);
+const widths = img
+  ? [...new Set([360, 540, 720, 960, 1280, 1600, 2000].filter((w) => w < img.width).concat(img.width))]
+  : [];
+---
+
+{
+  img ? (
+    <Picture
+      src={img}
+      alt={alt}
+      widths={widths}
+      sizes={sizes}
+      formats={['avif', 'webp']}
+      quality={80}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding={priority ? 'sync' : 'async'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      class:list={['block h-full w-full object-cover', imgClass]}
+      pictureAttributes={{ class: `block h-full w-full ${cls}` }}
+    />
+  ) : (
+    <div
+      class:list={['relative grid h-full w-full place-items-center bg-gradient-to-br from-ash to-coal', cls]}
+      role={alt ? 'img' : undefined}
+      aria-label={alt || undefined}
+    >
+      {import.meta.env.DEV && <span class="t-wide text-stone">{name}</span>}
+    </div>
+  )
+}

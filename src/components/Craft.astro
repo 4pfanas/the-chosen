@@ -1,0 +1,39 @@
+---
+import type { Content } from '../data/content';
+import SmartImage from './ui/SmartImage.astro';
+
+interface Props {
+  c: Content;
+}
+const { c } = Astro.props;
+const cr = c.craft;
+---
+
+<section class="relative bg-ink py-24 md:py-36" aria-labelledby="craft-title">
+  <div class="container-x">
+    <p class="t-wide text-paper/60" data-reveal>{cr.eyebrow}</p>
+    <h2 id="craft-title" class="t-serif t-h2 mt-5 max-w-3xl" data-reveal>{cr.title}</h2>
+
+    <ol class="mt-16 grid gap-6 md:grid-cols-3">
+      {
+        cr.items.map((it, i) => (
+          <li class:list={['group overflow-hidden rounded-[2rem] bg-coal', i === 1 && 'md:translate-y-12']} data-reveal>
+            <div class="aspect-[4/5] overflow-hidden">
+              <SmartImage
+                name={it.image}
+                alt={it.alt}
+                sizes="(min-width: 768px) 30vw, 92vw"
+                imgClass="transition-transform duration-[1.2s] ease-[var(--ease-calm)] group-hover:scale-105"
+              />
+            </div>
+            <div class="p-7">
+              <span class="t-num text-[0.85rem] text-cobalt">{it.num}</span>
+              <h3 class="t-serif t-h3 mt-3">{it.title}</h3>
+              <p class="t-body mt-3 text-paper/65">{it.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

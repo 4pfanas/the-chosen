@@ -1,0 +1,45 @@
+---
+import { site } from '../data/site';
+import type { Content } from '../data/content';
+
+interface Props {
+  c: Content;
+}
+const { c } = Astro.props;
+const r = c.reviews;
+---
+
+<section class="relative bg-ink py-24 md:py-36" aria-labelledby="reviews-title" data-reviews>
+  <div class="container-x">
+    <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="t-wide text-paper/60" data-reveal>{r.eyebrow}</p>
+        <h2 id="reviews-title" class="t-serif t-h2 mt-5" data-reveal>{r.title}</h2>
+      </div>
+      <div class="flex items-center gap-3" data-reveal>
+        <button type="button" class="grid h-12 w-12 place-items-center rounded-full border border-line-dark transition-colors hover:border-paper" aria-label={r.prev} data-review-prev>
+          <svg class="rtl:-scale-x-100" width="16" height="10" viewBox="0 0 16 10" aria-hidden="true"><path d="M16 5H1.5M5.5 1l-4 4 4 4" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+        </button>
+        <button type="button" class="grid h-12 w-12 place-items-center rounded-full border border-line-dark transition-colors hover:border-paper" aria-label={r.next} data-review-next>
+          <svg class="rtl:-scale-x-100" width="16" height="10" viewBox="0 0 16 10" aria-hidden="true"><path d="M0 5h14.5M10.5 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ul class="no-scrollbar mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-ps-5 px-5 md:scroll-ps-10 md:px-10 lg:scroll-ps-14 lg:px-14" data-review-track>
+    {
+      r.items.map((it) => (
+        <li class="w-[85vw] shrink-0 snap-start rounded-[2rem] border border-line-dark bg-coal p-8 sm:w-[24rem] md:p-10">
+          <p class="tracking-[0.2em] text-cobalt" aria-label="5 out of 5">★★★★★</p>
+          <blockquote class="t-serif mt-5 text-[1.7rem] leading-[1.2] rtl:text-[1.3rem] rtl:leading-[1.7]">“{it.text}”</blockquote>
+          <p class="t-wide mt-6 text-stone">{r.source}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="container-x mt-10">
+    <a href={site.mapsUrl} target="_blank" rel="noopener" class="t-wide text-paper/70 underline decoration-cobalt underline-offset-8 hover:text-paper">{r.cta}</a>
+  </div>
+</section>

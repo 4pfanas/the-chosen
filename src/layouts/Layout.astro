@@ -1,0 +1,98 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/instrument-serif/latin-400.css';
+import '@fontsource/instrument-serif/latin-400-italic.css';
+import '@fontsource/manrope/latin-400.css';
+import '@fontsource/manrope/latin-500.css';
+import '@fontsource/manrope/latin-600.css';
+import '@fontsource/manrope/latin-700.css';
+import '@fontsource/ibm-plex-sans-arabic/arabic-400.css';
+import '@fontsource/ibm-plex-sans-arabic/arabic-500.css';
+import '@fontsource/ibm-plex-sans-arabic/arabic-600.css';
+import '@fontsource/ibm-plex-sans-arabic/arabic-700.css';
+import '../styles/global.css';
+
+import { getImage } from 'astro:assets';
+import type { Lang } from '../data/site';
+import { site, pathFor } from '../data/site';
+import { content } from '../data/content';
+import { findImage } from '../lib/images';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = content[lang];
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+const base = Astro.site ?? new URL(Astro.url.origin);
+const canonical = new URL(pathFor(lang), base).href;
+const enUrl = new URL(pathFor('en'), base).href;
+const arUrl = new URL(pathFor('ar'), base).href;
+
+const heroMeta = findImage('hero-pour');
+const og = heroMeta ? await getImage({ src: heroMeta, width: Math.min(1200, heroMeta.width), format: 'jpg' }) : undefined;
+const ogUrl = og ? new URL(og.src, base).href : undefined;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CafeOrCoffeeShop',
+  name: site.brand[lang],
+  servesCuisine: 'Speciality coffee',
+  inLanguage: lang,
+  url: canonical,
+  image: ogUrl,
+  telephone: `+${site.whatsapp}`,
+  openingHours: site.openingHours,
+  hasMenu: `${canonical}#menu`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.locality,
+    addressCountry: site.address.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
+  sameAs: [site.instagram],
+};
+---
+
+<!doctype html>
+<html lang={lang} dir={dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{c.meta.title}</title>
+    <meta name="description" content={c.meta.description} />
+    {site.isConcept && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="ar" href={arUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+    <meta name="theme-color" content={site.themeColor} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={c.meta.title} />
+    <meta property="og:description" content={c.meta.description} />
+    <meta property="og:url" content={canonical} />
+    {ogUrl && <meta property="og:image" content={ogUrl} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        d.classList.add('js-motion');
+        setTimeout(function () {
+          if (!d.classList.contains('motion-ready')) d.classList.remove('js-motion');
+        }, 4000);
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main" class="skip-link">{c.nav.skip}</a>
+    <slot />
+    <script>
+      import { initSite } from '../scripts/site';
+      initSite();
+    </script>
+  </body>
+</html>
